@@ -1,0 +1,38 @@
+Here was the output for the longtrace for all of the types of caching:
+
+~~~!bash
+lee@Asimov:~/cs51/cs51_hw7$ ls
+cache.c  cache.o  long-trace.txt  sample.txt
+lee@Asimov:~/cs51/cs51_hw7$ ./cache.o long-trace.txt 1 0
+
+
+Run had 6076728 hits and 269350 misses. Hit percentage is 0.957556
+lee@Asimov:~/cs51/cs51_hw7$ ./cache.o long-trace.txt 2 0
+
+
+Run had 6185842 hits and 160236 misses. Hit percentage is 0.974750
+lee@Asimov:~/cs51/cs51_hw7$ ./cache.o long-trace.txt 3 0
+
+
+Run had 6214876 hits and 131202 misses. Hit percentage is 0.979325
+lee@Asimov:~/cs51/cs51_hw7$ ./cache.o long-trace.txt 4 0
+
+
+Run had 6220013 hits and 126065 misses. Hit percentage is 0.980135
+~~~
+
+
+As you can see from the output, the conventional wisdom holds up
+pretty well, as the differences between the different kinds of caching 
+are less pronounced the bigger the sizes of the sets. 
+
+The jump in percentage improvement for the 1 size sets to the 2 size sets
+is rougly a 1.6% improvement in the large samples. Contrast this with the 
+jump to size 4 sets from the size 2 sets, which sees an improvement of 
+roughly 0.5%, as well as the jump from size 4 to size 64, which only sees an 
+improvement of around 0.1%. 
+
+From this the diminishing returns of the size of the sets is pretty clear, 
+as the middle ground  of size 4 sets has comparable accuracy while having a better worst-case 
+runtime (non-asymptotic), with the caching system only needing to check 1/16th of
+the values that the 64 size system would need to check. 

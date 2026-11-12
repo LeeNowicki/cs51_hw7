@@ -60,12 +60,12 @@ int main(int argc, char *argv[])
         printf("Usage: ./cache filename, caching type, verbose\n \
                filename: string filename\n \
                 caching type: 1-4, 1 direct, 2 2-way, 3 4-way, 4 fully associative\n \
-                verbose: 1 if verbose, else defaults to not");
+                verbose: 1 if verbose, else defaults to not\n");
         exit(1);
     }
 
     if (argc >3){
-        verbose_arg = argv[2];
+        verbose_arg = argv[3];
     }
 
     if (strcmp(verbose_arg, "1") == 0){
@@ -127,6 +127,7 @@ int main(int argc, char *argv[])
       
       // ok, now we have the line from the trace file.  
         if(verbose){
+            printf("\n\n-------------------------\n\n");
       printf("address %08x, ", n);
       switch (c) {
       case 'I':
@@ -167,7 +168,7 @@ int main(int argc, char *argv[])
             currLine = cache[i];
 
             if (verbose) printf("State of line %x in set %x: valid: %x, tag: %x, lastUse: %x\n", 
-                   i-setNum, setNum, currLine.valid, currLine.tag, currLine.lastUse);
+                   i-(setNum*setSize), setNum, currLine.valid, currLine.tag, currLine.lastUse);
 
             if(currLine.valid && tag == currLine.tag){
                 // Have a hit - increment the hit counter, update the last use, and break
@@ -198,7 +199,7 @@ int main(int argc, char *argv[])
             currLine = cache[oldest_index];
 
             if (verbose) printf("New state of line %x, contained in set %x: valid: %x, tag: %x, lastUse: %x\n", 
-                   oldest_index, setNum, currLine.valid, currLine.tag, currLine.lastUse);
+                   oldest_index - (setNum*setSize), setNum, currLine.valid, currLine.tag, currLine.lastUse);
         }
 
         last_touch++;
@@ -206,7 +207,8 @@ int main(int argc, char *argv[])
 
     //Now the report
 
-    printf("Run had %d hits and %d misses. Hit percentage is %f\n", hitNum, missNum, (float)hitNum/(hitNum+missNum));
+    
+    printf("\n\nRun had %d hits and %d misses. Hit percentage is %f\n", hitNum, missNum, (float)hitNum/(hitNum+missNum));
 
     fclose(fh);
 }
