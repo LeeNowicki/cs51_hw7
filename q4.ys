@@ -1,0 +1,35 @@
+# Aleksander Nowicki
+# y86 code to test forwarding in naively pipelined things
+
+
+# loads a value into %eax, %ecx, and a memory location
+# ends with enough no-ops to be sure that these don't interfere with
+# the part that is actually supposed to stall it
+setup:
+    irmovl 0xffffffff, %eax
+    irmovl 0xaaaaaaaa, %ecx
+    irmovl 0xbbbbbbbb, %edx
+    irmovl 0x00004000, %ebx
+    rmmovl %edx, (%ebx)
+
+
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
+hazard:
+    mrmovl (%ebx), %eax #get from memory, will be writing back W_valM
+    irmovl 0xcccccccc, %eax #irmovl, will be in the memory stage 
+                            # giving it M_valE
+    addl %ebx, %eax #operation in the execute stage, offers e_valE
+    pushl %eax #will need value in the register
+
+    
+
+
+
+
+
